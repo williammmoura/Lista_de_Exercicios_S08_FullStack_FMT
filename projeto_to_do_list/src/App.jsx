@@ -1,34 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  //Estado base
+  const [listaDeTarefas, setListaDeTarefas] = useState([
+    {id:1, texto:"Tarefa 1", finalizado:false}
+  ])
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+  function adicionarTarefa(tarefa){
+    const novaTarefa = {id:listaDeTarefas.length + 1, texto: tarefa, finalizado: false}
+
+    setListaDeTarefas([...listaDeTarefas, novaTarefa])
+  }
+
+  function removerTarefa(tarefa){
+    //Filtrar (filter) a tarefa selecionada e assim remover a tarefa
+    const novaLista = listaDeTarefas.filter(item => item.id != tarefa.id)
+    setListaDeTarefas(novaLista)
+  }
+
+  return(
+    <div className='App'>
+      <CardAdicionar adicionarTarefa={adicionarTarefa} />
+      {
+        listaDeTarefas.map(tarefa => (
+          <ListItem tarefa={tarefa} removerTarefa={removerTarefa}/>
+        ))
+      }
     </div>
   )
 }
 
-export default App
+export default App;
